@@ -1,7 +1,7 @@
 import requests
 import urllib3
 
-from helper.main import main
+from subdomain_takeover_tools.helper.main import bootstrap
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -20,5 +20,9 @@ def is_valid(hostname, _):
         return False
 
 
+def main():
+    bootstrap(is_valid)
+
+
 if __name__ == "__main__":
-    main(is_valid)
+    main()

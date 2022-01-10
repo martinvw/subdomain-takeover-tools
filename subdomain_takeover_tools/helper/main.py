@@ -1,11 +1,12 @@
 import sys
 
 import requests
-from helper.prepare import prepare_domain_name, process_subtake_output
 import tldextract
 
+from subdomain_takeover_tools.helper.prepare import prepare_domain_name, process_subtake_output
 
-def main(is_valid):
+
+def bootstrap(is_valid):
     inverse = '--inverse' in sys.argv
     strict = '--strict' in sys.argv
 

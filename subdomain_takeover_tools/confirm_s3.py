@@ -2,7 +2,7 @@ import requests
 import boto3
 from botocore.exceptions import ClientError
 
-from helper.main import main
+from subdomain_takeover_tools.helper.main import bootstrap
 
 
 def is_valid(name, _):
@@ -30,5 +30,9 @@ def confirm_s3(name):
         return False
 
 
+def main():
+    bootstrap(is_valid)
+
+
 if __name__ == "__main__":
-    main(is_valid)
+    main()

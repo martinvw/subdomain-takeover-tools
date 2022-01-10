@@ -16,7 +16,7 @@ Subtake has some false positives on Google Cloud buckets as S3 buckets, also som
 The script `confirm-s3.py` will make sure that the bucket is actually vulnerable.
 
 ```bash
-grep "\[s3 bucket: " subtake-output.txt | python3 confirm-s3.py
+grep "\[s3 bucket: " subtake-output.txt | confirm_s3
 ```
 
 ### Confirming ELB
@@ -24,7 +24,7 @@ grep "\[s3 bucket: " subtake-output.txt | python3 confirm-s3.py
 Some patterns of elb are vulnerable while others are not, to filter them we can use our script:
 
 ```bash
-grep "\[elasticbeanstalk: " subtake-output.txt | python3 confirm-elb.py
+grep "\[elasticbeanstalk: " subtake-output.txt | confirm_elb
 ```
 
 *Note:* the parameter `--strict` is accepted here but will not lead to expected results.
@@ -35,7 +35,7 @@ grep "\[elasticbeanstalk: " subtake-output.txt | python3 confirm-elb.py
 It seems that 
 
 ```bash
-grep "\[shopify: " subtake-output.txt | python3 confirm-shopify.py
+grep "\[shopify: " subtake-output.txt | confirm_shopify
 ```
 
 ## Separate tools
@@ -47,5 +47,5 @@ As part of my process I want to know the domains involved in my findings.
 Example usage:
 
 ```bash
-< subtake-output.txt | cut -f3 | python3 extract-domain-names.py | sort -u > involved.domains
+< subtake-output.txt | cut -f3 | python3 extract_domain_names.py | sort -u > involved.domains
 ```
