@@ -39,6 +39,7 @@ setup(
     author_email='info@martinvw.nl',
     description='Some helper subdomain_takeover_tools to validate subdomain takeovers',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     entry_points={'console_scripts': ['confirm_elb=subdomain_takeover_tools.confirm_elb:main',
                                       'confirm_s3=subdomain_takeover_tools.confirm_s3:main',
                                       'confirm_shopify=subdomain_takeover_tools.confirm_shopify:main',
