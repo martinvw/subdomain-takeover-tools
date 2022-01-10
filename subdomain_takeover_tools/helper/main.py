@@ -14,6 +14,9 @@ def bootstrap(is_valid):
 
     lines = data.strip().split('\n')
     for line in lines:
+        if not line.strip():
+            continue
+
         if ']\t\t' in line:
             process_subtake_output(is_valid, line, check, inverse, strict)
         else:
