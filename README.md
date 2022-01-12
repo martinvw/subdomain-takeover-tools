@@ -1,6 +1,6 @@
 # Subdomain Takeover Tools
 
-[![Latest Package version](https://badge.fury.io/py/subdomain_takeover_tools.svg)](https://badge.fury.io/py/subdomain_takeover_tools)
+[![Latest Package version](https://badge.fury.io/py/subdomain-takeover-tools.svg)](https://badge.fury.io/py/subdomain-takeover-tools)
 [![Build status](https://img.shields.io/pypi/status/subdomain_takeover_tools.svg?maxAge=2592000)](https://pypi.python.org/pypi/subdomain_takeover_tools)
 [![Supported versions](https://img.shields.io/pypi/pyversions/subdomain_takeover_tools.svg?maxAge=2592000)](https://pypi.python.org/pypi/subdomain_takeover_tools)
 
