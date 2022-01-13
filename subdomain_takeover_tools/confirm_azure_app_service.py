@@ -14,7 +14,7 @@ def is_valid(hostname, cname):
     if cname.count('.') == 2:
         try:
             dns.resolver.resolve('asuid.' + hostname, 'TXT')
-        except dns.resolver.NXDOMAIN:
+        except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
             return True
 
     return False
