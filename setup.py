@@ -73,6 +73,7 @@ setup(
                                       'confirm_azure_traffic_manager=subdomain_takeover_tools'
                                       '.confirm_azure_traffic_manager:main',
                                       'extract_domain_names=subdomain_takeover_tools.extract_domain_names:main',
+                                      'authoritative_resolve=subdomain_takeover_tools.authoritative_resolve:main',
                                       ]},
     include_package_data=True,
     install_requires=[

@@ -17,6 +17,10 @@ def is_valid(hostname, cname):
     if cname is None:
         return False
 
+    return confirm_azure_traffic_manager(cname)
+
+
+def confirm_azure_traffic_manager(cname):
     if TRAFFICMANAGER_NET in cname:
         dns_prefix = cname.replace(TRAFFICMANAGER_NET, '')
         result = tm_client.profiles.check_traffic_manager_relative_dns_name_availability(
@@ -24,7 +28,6 @@ def is_valid(hostname, cname):
             "microsoft.network/trafficmanagerprofiles"
         )
         return result.name_available
-
     return False
 
 

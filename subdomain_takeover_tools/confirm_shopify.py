@@ -13,6 +13,10 @@ headers = {
 
 
 def is_valid(hostname, _):
+    return confirm_shopify(hostname)
+
+
+def confirm_shopify(hostname):
     try:
         r = requests.get('http://%s' % hostname, verify=False, timeout=15, headers=headers)
         return ONLY_ONE_STEP_LEFT in r.text

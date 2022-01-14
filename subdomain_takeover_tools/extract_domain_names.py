@@ -4,8 +4,12 @@ import tldextract
 
 def main():
     for line in sys.stdin:
-        r = tldextract.extract(line)
-        sys.stdout.write('.'.join(r[-2:]) + '\n')
+        sys.stdout.write(extract_domain_name(line) + '\n')
+
+
+def extract_domain_name(subdomain):
+    r = tldextract.extract(subdomain)
+    return '.'.join(r[-2:])
 
 
 if __name__ == "__main__":

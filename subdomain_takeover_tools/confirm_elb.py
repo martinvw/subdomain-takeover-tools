@@ -7,6 +7,10 @@ def is_valid(_, cname):
     if cname is None:
         return False
 
+    return confirm_elb(cname)
+
+
+def confirm_elb(cname):
     if cname.count('.') == 3:
         (prefix, region, _, _) = cname.split('.')
 
@@ -15,7 +19,6 @@ def is_valid(_, cname):
 
         if result['Available']:
             return True
-
     return False
 
 

@@ -11,12 +11,15 @@ def is_valid(hostname, cname):
     if cname is None:
         return False
 
+    return confirm_azure_app_service(cname, hostname)
+
+
+def confirm_azure_app_service(cname, hostname):
     if cname.count('.') == 2:
         try:
             dns.resolver.resolve('asuid.' + hostname, 'TXT')
         except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
             return True
-
     return False
 
 
