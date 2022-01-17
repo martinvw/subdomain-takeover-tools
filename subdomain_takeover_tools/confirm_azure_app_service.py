@@ -1,7 +1,7 @@
 import dns.resolver
 
 from subdomain_takeover_tools.helper.main import bootstrap
-from subdomain_takeover_tools.helper.prepare import resolve_cname
+from subdomain_takeover_tools.helper.prepare import resolve_cname, prepare_domain_name
 
 
 def is_valid(hostname, cname):
@@ -15,6 +15,8 @@ def is_valid(hostname, cname):
 
 
 def confirm_azure_app_service(cname, hostname):
+    cname = prepare_domain_name(cname)
+
     if cname.count('.') == 2:
         try:
             dns.resolver.resolve('asuid.' + hostname, 'TXT')

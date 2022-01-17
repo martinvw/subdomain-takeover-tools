@@ -1,6 +1,7 @@
 import boto3
 
 from subdomain_takeover_tools.helper.main import bootstrap
+from subdomain_takeover_tools.helper.prepare import prepare_domain_name
 
 
 def is_valid(_, cname):
@@ -11,6 +12,8 @@ def is_valid(_, cname):
 
 
 def confirm_elb(cname):
+    cname = prepare_domain_name(cname)
+
     if cname.count('.') == 3:
         (prefix, region, _, _) = cname.split('.')
 

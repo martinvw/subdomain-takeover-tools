@@ -4,7 +4,7 @@ import dns.resolver
 import sys
 
 
-def query_authoritative_ns(domain, log=lambda msg: None):
+def _query_authoritative_ns(domain, log=lambda msg: None):
     default = dns.resolver.get_default_resolver()
     nameserver = default.nameservers[0]
 
@@ -16,7 +16,7 @@ def query_authoritative_ns(domain, log=lambda msg: None):
 
         log('Looking up %s on %s' % (sub, nameserver))
         query = dns.message.make_query(sub, rdtype=dns.rdatatype.NS)
-        response = dns.query.udp(query, nameserver)
+        response = dns.query.udp(query, nameserver, timeout=30)
 
         rcode = response.rcode()
         if rcode == dns.rcode.NOERROR:
@@ -56,7 +56,7 @@ def query_authoritative_ns(domain, log=lambda msg: None):
 
 
 def query_authoritative(domain, request_type='A', log=lambda msg: None):
-    authority = query_authoritative_ns(domain, log)
+    authority = _query_authoritative_ns(domain, log)
 
     default = dns.resolver.get_default_resolver()
     nameserver = default.resolve(authority[0].target).rrset[0].to_text()
