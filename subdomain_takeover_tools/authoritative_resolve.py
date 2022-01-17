@@ -22,7 +22,11 @@ def _query_authoritative_ns(domain, log=lambda msg: None):
         if rcode == dns.rcode.NOERROR:
             pass
         elif rcode == dns.rcode.NXDOMAIN:
-            raise Exception('%s does not exist.' % sub)
+            if i < len(domain_parts) - 1 and i != 0:
+                sys.stderr.write(sub + " does not exist, skipping\n")
+                continue
+            else:
+                raise Exception('%s does not exist.' % sub)
         else:
             raise Exception('Error %s' % (dns.rcode.to_text(rcode)))
 
