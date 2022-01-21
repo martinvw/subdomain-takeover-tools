@@ -43,7 +43,7 @@ def _query_authoritative_ns(domain, log=lambda msg: None):
                 if rr.rdtype == dns.rdatatype.SOA:
                     log('Same server is authoritative for %s' % sub)
                 elif rr.rdtype == dns.rdatatype.A:
-                    nameserver = rr.items[0].address
+                    nameserver = list(rr.items)[0].address
                     log('Glue record for %s: %s' % (rr.name, nameserver))
                 elif rr.rdtype == dns.rdatatype.NS:
                     authority = rr.target

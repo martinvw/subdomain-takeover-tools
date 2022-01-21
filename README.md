@@ -62,5 +62,7 @@ As part of my process I want to know the domains involved in my findings.
 Example usage:
 
 ```bash
-< subtake-output.txt | cut -f3 | python3 extract_domain_names.py | sort -u > involved.domains
+cut -f3 < subtake-output.txt | extract_domain_names | sort -u > involved.domains
 ```
+
+Note that `extract_domain_names` also support groups, such as `domain.(co.id|in.th|ph|vn)`, this will be expanded automatically.
