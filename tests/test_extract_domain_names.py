@@ -15,3 +15,15 @@ class Test(TestCase):
             "github.co.uk",
             extract_domain_name("test.test.github.co.uk")
         )
+
+    def test_extract_domain_names(self):
+        self.assertEqual(
+            "github.com\ngithub.io",
+            extract_domain_name("*.github.(com|io)")
+        )
+
+    def test_brackets_in_the_front(self):
+        self.assertEqual(
+            "endlessgroup.org",
+            extract_domain_name("(*).endlessgroup.org")
+        )
