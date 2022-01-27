@@ -27,3 +27,9 @@ class Test(TestCase):
             "endlessgroup.org",
             extract_domain_name("(*).endlessgroup.org")
         )
+
+    def test_brackets_in_the_front_2(self):
+        self.assertEqual(
+            "sharefile.com",
+            extract_domain_name("(yoursubdomain).sharefile.com/sf/v3/")
+        )

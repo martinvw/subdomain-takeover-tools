@@ -17,7 +17,7 @@ def extract_domain_name(subdomain):
 
 def _handle_pattern(subdomain):
     end_result = ''
-    result = re.search(r'^(.*)\(([a-z.|]+)\)', subdomain)
+    result = re.search(r'^(.*\.)\(([a-z.|]+)\)', subdomain)
     if result is None:
         # false positive
         return _extract_single_domain_name(subdomain)
@@ -30,6 +30,7 @@ def _handle_pattern(subdomain):
 
 
 def _extract_single_domain_name(subdomain):
+    subdomain.replace('(', '').replace(')', '')
     r = tldextract.extract(subdomain)
     return '.'.join(r[-2:])
 
