@@ -25,6 +25,13 @@ All scripts support the following two parameters:
 - `--strict`:  only report as vulnerable if the issue is not also applicable on `hostname.tld` and `www.hostname.tld`.
 - `--inverse`: do inverse reporting, so report all subdomains that are not vulnerable
 
+Some scripts require a config file to be present, the location is `.subdomain_takeover_tools.ini`, an example of the file can be found below:
+
+```ini
+[azure]
+subscription_id=44713cf2-8656-11ec-a8a3-0242ac120002
+```
+
 ## Confirming S3
 
 Subtake has some false positives on Google Cloud buckets as S3 buckets, also some access denied's end up in the results.
