@@ -1,6 +1,6 @@
-setuptools==60.5.0
+setuptools==60.7.1
 tldextract==3.1.2
-boto3==1.20.44
+boto3==1.20.49
 dnspython==2.2.0
 azure-identity==1.7.1
 azure-mgmt-trafficmanager==1.0.0
