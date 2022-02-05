@@ -22,7 +22,7 @@ def _query_authoritative_ns(domain, log=lambda msg: None):
         if rcode == dns.rcode.NOERROR:
             pass
         elif rcode == dns.rcode.NXDOMAIN:
-            if i < len(domain_parts) - 1 and i != 0:
+            if i < len(domain_parts) - 1 and i != 1:
                 sys.stderr.write(sub + " does not exist, skipping\n")
                 continue
             else:
@@ -65,7 +65,7 @@ def query_authoritative(domain, request_type='A', log=lambda msg: None):
     default = dns.resolver.get_default_resolver()
     nameserver = default.resolve(authority[0].target).rrset[0].to_text()
     query = dns.message.make_query(domain, request_type)
-    query_result = dns.query.udp(query, nameserver)
+    query_result = dns.query.udp(query, nameserver, timeout=30)
 
     result = []
     if query_result.answer:

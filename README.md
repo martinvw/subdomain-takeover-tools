@@ -66,3 +66,27 @@ cut -f3 < subtake-output.txt | extract_domain_names | sort -u > involved.domains
 ```
 
 Note that `extract_domain_names` also support groups, such as `domain.(co.id|in.th|ph|vn)`, this will be expanded automatically.
+
+### Resolving from the authoritative DNS authority
+
+For validation of the results I want to validate whether the DNS record is still accurate.
+
+To do this we fetch the authoritative result's step by step from the authoritative DNS servers.
+
+```bash
+authoritative_resolve "github.com" "martinvw.nl"
+```
+
+### Exporting and enriching
+
+The `subtake_enrich_and_export` will split the existing output and add some additional columms:
+
+- has a wildcard
+- domain name
+- tld
+- still vulnerable
+- authoritative results
+
+```bash
+subtake_enrich_and_export < subtakee-output.txt
+```
