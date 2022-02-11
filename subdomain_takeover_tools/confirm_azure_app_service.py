@@ -20,7 +20,7 @@ def confirm_azure_app_service(cname, hostname):
     if cname.count('.') == 2:
         try:
             dns.resolver.resolve('asuid.' + hostname, 'TXT')
-        except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
+        except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.exception.Timeout):
             return True
     return False
 
