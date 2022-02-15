@@ -24,13 +24,13 @@ def confirm_s3(name):
 
 def _confirm_http_response(name):
     try:
-        r = requests.head("http://" + name)
+        r = requests.head("http://" + name, timeout=30)
         if 'x-amz-error-detail-BucketName' in r.headers:
             return True
 
-        r = requests.get("http://" + name)
+        r = requests.get("http://" + name, timeout=30)
         return '<BucketName>' in r.text or 'BucketName: ' in r.text or '"BucketName"' in r.text
-    except requests.exceptions.ConnectionError:
+    except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
         return False
 
 
