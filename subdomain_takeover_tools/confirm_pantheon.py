@@ -12,7 +12,7 @@ def is_valid(_, cname):
 def confirm_pantheon(cname):
     cname = prepare_domain_name(cname)
 
-    if check_postfix(cname) and cname.count('.') == 2:
+    if _check_postfix(cname) and cname.count('.') == 2:
         (prefix, _, _) = cname.split('.')
 
         return prefix.startswith('dev-') or prefix.startswith('test-') or prefix.startswith(
@@ -20,7 +20,7 @@ def confirm_pantheon(cname):
     return False
 
 
-def check_postfix(cname):
+def _check_postfix(cname):
     return cname.endswith('getpantheon.com') or cname.endswith('gotpantheon.com') or cname.endswith('pantheonsite.io')
 
 

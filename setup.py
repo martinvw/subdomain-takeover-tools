@@ -73,6 +73,7 @@ setup(
                                       'confirm_azure_traffic_manager=subdomain_takeover_tools'
                                       '.confirm_azure_traffic_manager:main',
                                       'confirm_pantheon=subdomain_takeover_tools.confirm_pantheon:main',
+                                      'confirm_github=subdomain_takeover_tools.confirm_github:main',
                                       'extract_domain_names=subdomain_takeover_tools.extract_domain_names:main',
                                       'authoritative_resolve=subdomain_takeover_tools.authoritative_resolve:main',
                                       'subtake_enrich_and_export=subdomain_takeover_tools.subtake_enrich_and_export'
