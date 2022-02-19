@@ -16,6 +16,9 @@ def confirm_elb(cname):
 
     if cname.count('.') == 3:
         (prefix, region, _, _) = cname.split('.')
+        # Invalid length for parameter CNAMEPrefix, value: 3, valid min length: 4
+        if len(prefix) < 4:
+            return False
 
         client = boto3.client('elasticbeanstalk', region_name=region)
         result = client.check_dns_availability(CNAMEPrefix=prefix)
