@@ -30,7 +30,7 @@ def _handle_pattern(subdomain):
 
 
 def _extract_single_domain_name(subdomain):
-    subdomain.replace('(', '').replace(')', '')
+    subdomain = subdomain.replace('(', '').replace(')', '')
     r = tldextract.extract(subdomain)
     return '.'.join(r[-2:])
 

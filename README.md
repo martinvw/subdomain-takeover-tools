@@ -52,9 +52,15 @@ grep "\[elasticbeanstalk: " subtake-output.txt | confirm_elb
 
 *Note:* the parameter `--strict` is accepted here but will not lead to expected results.
 
+Please note that some regions are not enabled by default, when you receive the following error:
+
+> botocore.exceptions.ClientError: An error occurred (InvalidClientTokenId) when calling the CheckDNSAvailability operation: The security token included in the request is invalid.
+
+This could mean you have not yet enabled these, opt-in, regions, see https://console.aws.amazon.com/billing/home?#/account
+
 ### Confirming Shopify
 
-It seems that
+It seems that all current shopify examples are vulnerable, the following check just validates the DNS.
 
 ```bash
 grep "\[shopify: " subtake-output.txt | confirm_shopify
