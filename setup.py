@@ -76,6 +76,7 @@ setup(
                                       'confirm_agile_crm=subdomain_takeover_tools.confirm_agile_crm:main',
                                       'confirm_unclaimed=subdomain_takeover_tools.confirm_unclaimed:main',
                                       'confirm_agile_crm=subdomain_takeover_tools.confirm_agile_crm:main',
+                                      'confirm_fastly=subdomain_takeover_tools.confirm_fastly:main',
                                       'confirm_github=subdomain_takeover_tools.confirm_github:main',
                                       'extract_domain_names=subdomain_takeover_tools.extract_domain_names:main',
                                       'authoritative_resolve=subdomain_takeover_tools.authoritative_resolve:main',
