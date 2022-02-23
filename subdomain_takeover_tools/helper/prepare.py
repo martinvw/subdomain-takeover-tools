@@ -20,9 +20,12 @@ def process_subtake_output(is_valid, line, check, inverse, strict):
 
 
 def resolve_cname(hostname):
-    cnames = dns.resolver.resolve(hostname, 'CNAME')
+    try:
+        cnames = dns.resolver.resolve(hostname, 'CNAME')
 
-    if len(cnames) == 0:
-        raise ResourceWarning("CNAME not found")
-    else:
-        return prepare_domain_name(str(cnames[0]))
+        if len(cnames) == 0:
+            raise ResourceWarning("CNAME not found")
+        else:
+            return prepare_domain_name(str(cnames[0]))
+    except dns.resolver.NXDOMAIN:
+        return None
