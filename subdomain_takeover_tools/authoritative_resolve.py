@@ -1,7 +1,7 @@
+import sys
+
 import dns.query
 import dns.resolver
-
-import sys
 
 
 def _query_authoritative_ns(domain, log=lambda msg: None):

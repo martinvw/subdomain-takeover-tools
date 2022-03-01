@@ -1,6 +1,4 @@
-import requests
-from subdomain_takeover_tools.helper.main import bootstrap, settings
-from subdomain_takeover_tools.helper.prepare import prepare_domain_name
+from subdomain_takeover_tools.helper.main import bootstrap
 
 from subdomain_takeover_tools.helper.prepare import prepare_domain_name
 

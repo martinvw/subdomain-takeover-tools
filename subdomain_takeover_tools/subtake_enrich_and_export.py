@@ -1,6 +1,7 @@
+import sys
+
 from subdomain_takeover_tools.authoritative_resolve import query_authoritative
 from subdomain_takeover_tools.extract_domain_names import extract_domain_name
-import sys
 
 
 def main():

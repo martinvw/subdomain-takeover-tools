@@ -79,6 +79,9 @@ setup(
                                       'confirm_fastly=subdomain_takeover_tools.confirm_fastly:main',
                                       'confirm_github=subdomain_takeover_tools.confirm_github:main',
                                       'confirm_tumblr=subdomain_takeover_tools.confirm_tumblr:main',
+                                      'confirm_cargo=subdomain_takeover_tools.confirm_cargo:main',
+                                      'confirm_surge=subdomain_takeover_tools.confirm_surge:main',
+                                      'confirm_takeover=subdomain_takeover_tools.confirm_takeover:main',
                                       'extract_domain_names=subdomain_takeover_tools.extract_domain_names:main',
                                       'authoritative_resolve=subdomain_takeover_tools.authoritative_resolve:main',
                                       'subtake_enrich_and_export=subdomain_takeover_tools.subtake_enrich_and_export'

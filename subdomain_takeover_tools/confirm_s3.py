@@ -1,5 +1,5 @@
-import requests
 import boto3
+import requests
 from botocore.exceptions import ClientError
 
 from subdomain_takeover_tools.helper.main import bootstrap

@@ -16,7 +16,7 @@ A set of tools to validate the initial outcome of [subtake](https://github.com/j
 
    ``py -m pip install subdomain_takeover_tools``
 
-   Alternatively, you can download or clone this repo and call ``pip install -e .``.
+   Alternatively, you can download or clone this repo and call `pip install -e .`.
 
 ## Confirming takeovers
 
@@ -30,6 +30,14 @@ Some scripts require a config file to be present, the location is `.subdomain_ta
 ```ini
 [azure]
 subscription_id=44713cf2-8656-11ec-a8a3-0242ac120002
+[github]
+username=martinvw
+access_token=44713cf2-8656-11ec-a8a3-0242ac120002
+repo=44713cf2-8656-11ec-a8a3-0242ac120002
+[fastly]
+api_token=44713cf2-8656-11ec-a8a3-0242ac120002
+service=44713cf2-8656-11ec-a8a3-0242ac120002
+version=3
 ```
 
 ## Confirming S3
@@ -64,6 +72,22 @@ It seems that all current shopify examples are vulnerable, the following check j
 
 ```bash
 grep "\[shopify: " subtake-output.txt | confirm_shopify
+```
+
+### Filtering Pantheon
+
+Please note that for pantheon this repo currently only provides an initial check to eliminate some FALSE positives.
+
+```bash
+grep "\[pantheon: " subtake-output.txt | confirm_pantheon
+```
+
+### Filtering Cargo Collective
+
+Please note that for Cargo Collective this repo currently only provides an initial check to eliminate some FALSE positives.
+
+```bash
+grep "\[cargo: " subtake-output.txt | confirm_cargo
 ```
 
 ## Separate tools

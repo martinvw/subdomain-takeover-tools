@@ -1,6 +1,7 @@
-import sys
-import tldextract
 import re
+import sys
+
+import tldextract
 
 
 def main():
