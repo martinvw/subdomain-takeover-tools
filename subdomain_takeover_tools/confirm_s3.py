@@ -6,7 +6,7 @@ from subdomain_takeover_tools.helper.main import bootstrap
 
 
 def is_valid(name, _):
-    confirm_s3(name)
+    return confirm_s3(name)
 
 
 def confirm_s3(name):
