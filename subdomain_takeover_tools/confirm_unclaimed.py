@@ -36,8 +36,6 @@ def confirm_unclaimed_transip(domain_name):
     if 'availability' not in data:
         raise Exception("Request failed: " + r.content.decode())
 
-    print(data)
-
     return data['availability']['status'] == 'free'
 
 
