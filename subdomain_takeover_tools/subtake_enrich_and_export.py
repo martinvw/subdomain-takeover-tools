@@ -3,8 +3,14 @@ import sys
 from subdomain_takeover_tools.authoritative_resolve import query_authoritative
 from subdomain_takeover_tools.extract_domain_names import extract_domain_name
 
+_header = ['service', 'target', 'subdomain', 'domain', 'tld', 'wildcard', 'Still valid', 'Validated',
+           'Authorarative resolve', 'Service Label']
+_pre_validated = ['azure-app-services', 'azure-trafficmanager', 'azure-ip', 'azure-edge', 'fastly', 'agilecrm',
+                  'elasticbeanstalk', 's3 bucket', 'shopify', 'tumblr', 'unclaimed']
+
 
 def main():
+    sys.stdout.write(print_as(_header) + '\n')
     for line in sys.stdin:
         sys.stdout.write(print_as(enrich(line)) + '\n')
 
@@ -32,6 +38,7 @@ def enrich(line):
     wildcard = has_wildcard(subdomain, authoritative_result)
     active = still_active(authoritative_result, target)
     service = _narrow_down_service(service, target)
+    is_validated = _is_validated(service)
 
     return [
         service,
@@ -41,6 +48,7 @@ def enrich(line):
         subdomain.split('.')[-1],
         str(wildcard),
         str(active),
+        is_validated,
         print_authoritative_result(authoritative_result)
     ]
 
@@ -57,6 +65,13 @@ def still_active(authoritative_result, target):
         return None
 
     return target in authoritative_result
+
+
+def _is_validated(service):
+    if service in _pre_validated:
+        return 'TRUE'
+    else:
+        return ''
 
 
 def _split_line(line):
