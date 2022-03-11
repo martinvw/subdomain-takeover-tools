@@ -8,17 +8,17 @@ session.auth = (settings['github']['username'], settings['github']['access_token
 url = "https://api.github.com/repos/%s/%s/pages" % (settings['github']['username'], settings['github']['repo'])
 
 
-def is_valid(_, cname):
-    if cname is None:
+def is_valid(domain, _):
+    if domain is None:
         return False
 
-    return confirm_github(cname)
+    return confirm_github(domain)
 
 
-def confirm_github(cname):
-    cname = prepare_domain_name(cname)
+def confirm_github(domain):
+    domain = prepare_domain_name(domain)
 
-    configure_cname_response = session.put(url, json={'cname': cname})
+    configure_cname_response = session.put(url, json={'cname': domain})
     session.put(url, json={'cname': None})
     return configure_cname_response.status_code == 204
 
