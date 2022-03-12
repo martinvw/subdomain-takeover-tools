@@ -17,6 +17,9 @@ def is_valid(hostname, _):
 
 
 def confirm_shopify(hostname):
+    if hostname.endswith('.myshopify.com') or hostname.endswith('.shopify.com'):
+        return False
+
     try:
         r = requests.get('http://%s' % hostname, verify=False, timeout=15, headers=headers)
         return ONLY_ONE_STEP_LEFT in r.text

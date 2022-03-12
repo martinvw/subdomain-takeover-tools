@@ -16,6 +16,9 @@ def is_valid(domain, _):
 
 
 def confirm_github(domain):
+    if domain.endswith('.github.com') or domain.endswith('.github.io') or domain.endswith('.githubapp.com'):
+        return False
+
     domain = prepare_domain_name(domain)
 
     configure_cname_response = session.put(url, json={'cname': domain})

@@ -10,6 +10,9 @@ def is_valid(name, _):
 
 
 def confirm_s3(name):
+    if name.endswith('.amazonaws.com'):
+        return False
+
     try:
         s3 = boto3.resource('s3')
         s3.meta.client.head_bucket(Bucket=name)
