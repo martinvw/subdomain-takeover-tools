@@ -25,10 +25,13 @@ def is_valid(hostname, cname):
 
 
 def confirm_azure_edge_cdn(cname):
-    if cname.count('.') == 2 and EDGE_CDN in cname:
-        dns_prefix = cname.replace(EDGE_CDN, '')
-        result = session.post(url, json={'name': dns_prefix, 'type': 'Microsoft.Cdn/Profiles/Endpoints'})
-        return result.json()['nameAvailable']
+    try:
+        if cname.count('.') == 2 and EDGE_CDN in cname:
+            dns_prefix = cname.replace(EDGE_CDN, '')
+            result = session.post(url, json={'name': dns_prefix, 'type': 'Microsoft.Cdn/Profiles/Endpoints'})
+            return result.json()['nameAvailable']
+    except KeyError:
+        pass
     return False
 
 
