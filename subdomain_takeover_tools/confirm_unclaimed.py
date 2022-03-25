@@ -12,6 +12,12 @@ transip_session = requests.Session()
 transip_session.headers['Content-Type'] = 'application/json'
 transip_session.headers['Authorization'] = 'Bearer ' + settings['transip']['access_token']
 
+tld_blacklist = ['.cn',
+                 '.gov',
+                 '.int',
+                 '.aws'
+                 ]
+
 
 def is_valid(_, cname):
     if cname is None:
@@ -22,6 +28,10 @@ def is_valid(_, cname):
 
 def confirm_unclaimed(cname):
     domain_name = _extract_single_domain_name(prepare_domain_name(cname))
+
+    for blacklisted in tld_blacklist:
+        if domain_name.endswith(blacklisted):
+            return False
 
     if settings['transip'] is not None:
         return confirm_unclaimed_transip(domain_name)

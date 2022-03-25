@@ -17,7 +17,11 @@ def confirm_elb(cname):
     if cname.count('.') == 3:
         (prefix, region, _, _) = cname.split('.')
         # Invalid length for parameter CNAMEPrefix, value: 3, valid min length: 4
-        if len(prefix) < 4:
+        if len(prefix) < 4 or prefix.startswith('eba-'):
+            return False
+
+        # whenever a region contains '-gov-' we will no be able to take it over
+        if region.contains('-gov-'):
             return False
 
         client = boto3.client('elasticbeanstalk', region_name=region)
