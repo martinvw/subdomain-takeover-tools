@@ -12,11 +12,14 @@ transip_session = requests.Session()
 transip_session.headers['Content-Type'] = 'application/json'
 transip_session.headers['Authorization'] = 'Bearer ' + settings['transip']['access_token']
 
-tld_blacklist = ['.cn',
-                 '.gov',
-                 '.int',
-                 '.aws'
-                 ]
+tld_blacklist = [
+    '.cn',
+    '.gov',
+    '.int',
+    '.mil',
+    '.edu',
+    '.aws'
+]
 
 
 def is_valid(_, cname):

@@ -21,7 +21,7 @@ def confirm_elb(cname):
             return False
 
         # whenever a region contains '-gov-' we will no be able to take it over
-        if region.contains('-gov-'):
+        if '-gov-' in region:
             return False
 
         client = boto3.client('elasticbeanstalk', region_name=region)
