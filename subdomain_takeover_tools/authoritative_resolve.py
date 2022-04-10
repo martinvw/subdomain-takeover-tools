@@ -26,7 +26,7 @@ def _query_authoritative_ns(domain, log=lambda msg: None):
                 sys.stderr.write(sub + " does not exist, skipping\n")
                 continue
             else:
-                raise Exception('%s does not exist.' % sub)
+                raise DoesNotExist('%s does not exist.' % sub)
         else:
             raise Exception('Error %s' % (dns.rcode.to_text(rcode)))
 
@@ -85,6 +85,10 @@ def main():
         r = query_authoritative(s, 'A', verbose)
         print()
         print('Authoritative answer:', r)
+
+
+class DoesNotExist(Exception):
+    pass
 
 
 if __name__ == "__main__":
