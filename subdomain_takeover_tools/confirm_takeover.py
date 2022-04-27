@@ -4,6 +4,7 @@ from subdomain_takeover_tools.confirm_agile_crm import is_valid as agile_crm_is_
 from subdomain_takeover_tools.confirm_azure_app_service import is_valid as azure_app_service_is_valid
 from subdomain_takeover_tools.confirm_azure_edge_cdn import is_valid as azure_edge_cdn_is_valid
 from subdomain_takeover_tools.confirm_azure_traffic_manager import is_valid as azure_traffic_manager_is_valid
+from subdomain_takeover_tools.confirm_bigcartel import is_valid as bigcartel_is_valid
 from subdomain_takeover_tools.confirm_cargo import is_valid as cargo_is_valid
 from subdomain_takeover_tools.confirm_elb import is_valid as elb_is_valid
 from subdomain_takeover_tools.confirm_fastly import is_valid as fastly_is_valid
@@ -69,6 +70,8 @@ def _perform_check(service, target, domain):
         else:
             # other Azure services are not yet supported
             return None
+    elif service == 'bigcartel':
+        return bigcartel_is_valid(domain, target)
     elif service == 'cargo':
         return cargo_is_valid(domain, target)
     elif service == 'elasticbeanstalk':

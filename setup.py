@@ -72,6 +72,7 @@ setup(
                                       ':main',
                                       'confirm_azure_traffic_manager=subdomain_takeover_tools'
                                       '.confirm_azure_traffic_manager:main',
+                                      'confirm_bigcartel=subdomain_takeover_tools.confirm_bigcartel:main',
                                       'confirm_pantheon=subdomain_takeover_tools.confirm_pantheon:main',
                                       'confirm_azure_edge_cdn=subdomain_takeover_tools.confirm_azure_edge_cdn:main',
                                       'confirm_unclaimed=subdomain_takeover_tools.confirm_unclaimed:main',
@@ -84,6 +85,7 @@ setup(
                                       'confirm_takeover=subdomain_takeover_tools.confirm_takeover:main',
                                       'extract_domain_names=subdomain_takeover_tools.extract_domain_names:main',
                                       'authoritative_resolve=subdomain_takeover_tools.authoritative_resolve:main',
+                                      'monitor_cnames=subdomain_takeover_tools.monitor_cnames:main',
                                       'subtake_enrich_and_export=subdomain_takeover_tools.subtake_enrich_and_export'
                                       ':main',
                                       ]},

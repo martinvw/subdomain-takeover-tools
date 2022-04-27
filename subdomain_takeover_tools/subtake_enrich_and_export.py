@@ -4,9 +4,9 @@ from subdomain_takeover_tools.authoritative_resolve import query_authoritative
 from subdomain_takeover_tools.extract_domain_names import extract_domain_name
 
 _header = ['service', 'target', 'subdomain', 'domain', 'tld', 'wildcard', 'Still valid', 'Validated',
-           'Authorarative resolve', 'Service Label']
-_pre_validated = ['azure-app-services', 'azure-trafficmanager', 'azure-ip', 'azure-edge', 'fastly', 'agilecrm',
-                  'elasticbeanstalk', 's3 bucket', 'shopify', 'tumblr', 'unclaimed', "github"]
+           'Authoritative resolve', 'Service Label']
+_pre_validated = ['azure-app-services', 'azure-trafficmanager', 'azure-ip', 'azure-edge', 'bigcartel', 'fastly',
+                  'agilecrm', 'elasticbeanstalk', 's3 bucket', 'shopify', 'tumblr', 'unclaimed', "github"]
 
 
 def main():
