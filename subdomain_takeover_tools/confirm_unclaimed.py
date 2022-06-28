@@ -1,6 +1,7 @@
 import sys
 import time
 
+import dns
 import requests
 from tldextract import tldextract
 
@@ -22,11 +23,26 @@ tld_blacklist = [
 ]
 
 
-def is_valid(_, cname):
+def is_valid(domain, cname):
     if cname is None:
         return False
 
+    if not cname_still_valid(domain, cname):
+        return False
+
     return confirm_unclaimed(cname)
+
+
+def cname_still_valid(domain, cname):
+    try:
+        answers = dns.resolver.resolve(domain, "CNAME")
+        for rdata in answers:
+            if rdata.target.to_text(omit_final_dot=True) == cname:
+                return True
+    except dns.resolver.NXDOMAIN:
+        pass
+
+    return False
 
 
 def confirm_unclaimed(cname):
