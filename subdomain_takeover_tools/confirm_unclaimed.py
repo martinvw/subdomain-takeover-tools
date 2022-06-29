@@ -39,7 +39,7 @@ def cname_still_valid(domain, cname):
         for rdata in answers:
             if rdata.target.to_text(omit_final_dot=True) == cname:
                 return True
-    except dns.resolver.NXDOMAIN:
+    except dns.exception.DNSException:
         pass
 
     return False
