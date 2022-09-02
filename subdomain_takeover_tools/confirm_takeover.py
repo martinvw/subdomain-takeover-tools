@@ -80,8 +80,6 @@ def _perform_check(service, target, domain):
         return fastly_is_valid(domain, target)
     elif service == 'github':
         return github_is_valid(domain, target)
-    elif service == 'github':
-        return github_is_valid(domain, target)
     elif service == 'pantheon':
         return pantheon_is_valid(domain, target)
     elif service == 's3 bucket':
