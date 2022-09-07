@@ -20,6 +20,7 @@ from subdomain_takeover_tools.confirm_unclaimed import is_valid as unclaimed_is_
 def main():
     inverse = '--inverse' in sys.argv
     strict = '--strict' in sys.argv
+    full = '--full' in sys.argv
 
     data = sys.stdin.read()
 
@@ -32,7 +33,13 @@ def main():
 
         (service, target, domain) = _process_line(line)
 
-        _process_subtake_output(service, target, domain, inverse, strict)
+        result = _process_subtake_output(service, target, domain, inverse)
+
+        if result:
+            if full:
+                print(line)
+            else:
+                print(domain)
 
 
 def _process_line(line):
@@ -46,15 +53,14 @@ def _process_line(line):
     return service, target, domain
 
 
-def _process_subtake_output(service, target, domain, inverse, strict):
+def _process_subtake_output(service, target, domain, inverse):
     result = _perform_check(service, target, domain)
 
     if result is None:
         return
 
     # xor
-    if inverse != result:
-        print(domain)
+    return inverse != result
 
 
 def _perform_check(service, target, domain):
