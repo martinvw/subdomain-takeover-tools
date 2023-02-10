@@ -19,7 +19,8 @@ tld_blacklist = [
     '.int',
     '.mil',
     '.edu',
-    '.aws'
+    '.aws',
+    '.lb' # only third level is allowed
 ]
 
 
