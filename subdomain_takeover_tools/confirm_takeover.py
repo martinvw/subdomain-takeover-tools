@@ -73,6 +73,9 @@ def _perform_check(service, target, domain):
             return azure_edge_cdn_is_valid(domain, target)
         elif target.endswith('trafficmanager.net'):
             return azure_traffic_manager_is_valid(domain, target)
+        elif target.endswith('cloudapp.azure.com.'):
+            # for now, we assume cloudapp is vulnerable
+            return True
         else:
             # other Azure services are not yet supported
             return None
