@@ -4,6 +4,7 @@ from subdomain_takeover_tools.confirm_agile_crm import is_valid as agile_crm_is_
 from subdomain_takeover_tools.confirm_azure_app_service import is_valid as azure_app_service_is_valid
 from subdomain_takeover_tools.confirm_azure_edge_cdn import is_valid as azure_edge_cdn_is_valid
 from subdomain_takeover_tools.confirm_azure_traffic_manager import is_valid as azure_traffic_manager_is_valid
+from subdomain_takeover_tools.confirm_azure_api_management import is_valid as azure_api_managment_is_valid
 from subdomain_takeover_tools.confirm_bigcartel import is_valid as bigcartel_is_valid
 from subdomain_takeover_tools.confirm_cargo import is_valid as cargo_is_valid
 from subdomain_takeover_tools.confirm_elb import is_valid as elb_is_valid
@@ -73,6 +74,8 @@ def _perform_check(service, target, domain):
             return azure_edge_cdn_is_valid(domain, target)
         elif target.endswith('trafficmanager.net'):
             return azure_traffic_manager_is_valid(domain, target)
+        elif target.endswith('azure-api.net'):
+            return azure_api_managment_is_valid(domain, target)
         elif target.endswith('cloudapp.azure.com'):
             # for now, we assume cloudapp is vulnerable
             return True
