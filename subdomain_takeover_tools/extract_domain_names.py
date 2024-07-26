@@ -33,7 +33,7 @@ def _handle_pattern(subdomain):
 def _extract_single_domain_name(subdomain):
     subdomain = subdomain.replace('(', '').replace(')', '')
     r = tldextract.extract(subdomain)
-    return '.'.join(r[-2:])
+    return r.registered_domain
 
 
 if __name__ == "__main__":
