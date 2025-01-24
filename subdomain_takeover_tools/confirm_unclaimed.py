@@ -6,7 +6,7 @@ import requests
 from tldextract import tldextract
 
 from subdomain_takeover_tools.helper.main import bootstrap, settings
-from subdomain_takeover_tools.helper.prepare import prepare_domain_name
+from subdomain_takeover_tools.helper.prepare import prepare_domain_name, get_cached, store_cache
 
 # once we include additional support we might need to lazy initialize
 transip_session = requests.Session()
@@ -49,14 +49,22 @@ def cname_still_valid(domain, cname):
 def confirm_unclaimed(cname):
     domain_name = _extract_single_domain_name(prepare_domain_name(cname))
 
+    cached = get_cached('unclaimed', domain_name)
+    if cached is not None:
+        return cached
+
+    return store_cache('unclaimed', domain_name, confirm_uncached(domain_name))
+
+
+def confirm_uncached(domain_name):
     for blacklisted in tld_blacklist:
         if domain_name.endswith(blacklisted):
             return False
-
     if settings['transip'] is not None:
         return confirm_unclaimed_transip(domain_name)
     else:
         sys.stderr.write("No supported unclaimed configuration is setup, please consult the documentation")
+        return None
 
 
 def confirm_unclaimed_transip(domain_name):

@@ -2,12 +2,32 @@ import re
 
 import dns.resolver
 
+cache = {}
+
 
 def prepare_domain_name(host_in):
     host = re.sub(r'https?://', '', host_in)
     host = re.sub(r'/.*$', '', host)
     host = re.sub(r'\.$', '', host)
     return host
+
+
+def get_cached(cname, target):
+    key = (cname, target)
+    if key in cache:
+        return cache[key]
+    else:
+        return None
+
+
+def store_cache(cname, target, result):
+    if result is None:
+        return None
+
+    key = (cname, target)
+    cache[key] = result
+
+    return result
 
 
 def process_subtake_output(is_valid, line, check, inverse, strict):

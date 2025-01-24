@@ -1,3 +1,4 @@
+import re
 import sys
 
 from subdomain_takeover_tools.confirm_agile_crm import is_valid as agile_crm_is_valid
@@ -16,6 +17,9 @@ from subdomain_takeover_tools.confirm_shopify import is_valid as shopify_is_vali
 from subdomain_takeover_tools.confirm_surge import is_valid as surge_is_valid
 from subdomain_takeover_tools.confirm_tumblr import is_valid as tumblr_is_valid
 from subdomain_takeover_tools.confirm_unclaimed import is_valid as unclaimed_is_valid
+from subdomain_takeover_tools.helper.prepare import get_cached, store_cache
+
+cacheable = ["azure", "elasticbeanstalk"]
 
 
 def main():
@@ -29,8 +33,8 @@ def main():
     for line in lines:
         if not line.strip():
             continue
-        elif ']\t\t' not in line:
-            raise IOError("Unexpected input received, currently only subtake output is supported")
+        elif ']\t\t' not in line and '.]   ' not in line:
+            raise IOError("Unexpected input s received, currently only subtake output is supported")
 
         (service, target, domain) = _process_line(line)
 
@@ -44,7 +48,10 @@ def main():
 
 
 def _process_line(line):
-    (parts, domain) = line.split('\t\t')
+    if '\t\t' in line:
+        (parts, domain) = line.split('\t\t')
+    else:
+        (parts, domain) = re.split(r'  +', line)
     if ': ]' in parts:
         service = parts[1:-3]
         target = ''
@@ -65,6 +72,18 @@ def _process_subtake_output(service, target, domain, inverse):
 
 
 def _perform_check(service, target, domain):
+    if service in cacheable:
+        cached = get_cached(service, target)
+        if cached is not None:
+            return cached
+
+    fresh_result = perform_uncached(domain, service, target)
+    if service in cacheable and fresh_result is not None:
+        store_cache(service, target, fresh_result)
+    return fresh_result
+
+
+def perform_uncached(domain, service, target):
     if service == 'agilecrm':
         return agile_crm_is_valid(domain, target)
     elif service == 'azure':
