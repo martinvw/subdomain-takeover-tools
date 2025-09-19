@@ -29,8 +29,16 @@ def confirm_azure_edge_cdn(cname):
     try:
         if cname.count('.') == 2 and EDGE_CDN in cname:
             dns_prefix = cname.replace(EDGE_CDN, '')
-            result = session.post(url, json={'name': dns_prefix, 'type': 'Microsoft.Cdn/Profiles/Endpoints'}, headers={
-                "Authorization": "Bearer " + token})
+            result = session.post(
+                url,
+                json={
+                    'name': dns_prefix,
+                    'type': 'Microsoft.Cdn/Profiles/Endpoints'
+                },
+                headers={
+                    "Authorization": "Bearer " + token
+                }
+            )
             return result.json()['nameAvailable']
     except KeyError:
         pass
