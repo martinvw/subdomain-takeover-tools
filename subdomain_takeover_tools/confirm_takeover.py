@@ -8,6 +8,7 @@ from subdomain_takeover_tools.confirm_azure_traffic_manager import is_valid as a
 from subdomain_takeover_tools.confirm_azure_api_management import is_valid as azure_api_managment_is_valid
 from subdomain_takeover_tools.confirm_bigcartel import is_valid as bigcartel_is_valid
 from subdomain_takeover_tools.confirm_cargo import is_valid as cargo_is_valid
+from subdomain_takeover_tools.confirm_godaddy import is_valid as godaddy_is_valid
 from subdomain_takeover_tools.confirm_elb import is_valid as elb_is_valid
 from subdomain_takeover_tools.confirm_fastly import is_valid as fastly_is_valid
 from subdomain_takeover_tools.confirm_github import is_valid as github_is_valid
@@ -33,7 +34,7 @@ def main():
     for line in lines:
         if not line.strip():
             continue
-        elif ']\t\t' not in line and '.]   ' not in line:
+        elif ']\t\t' not in line and ']   ' not in line:
             raise IOError("Unexpected input s received, currently only subtake output is supported")
 
         (service, target, domain) = _process_line(line)
@@ -65,7 +66,7 @@ def _process_subtake_output(service, target, domain, inverse):
     result = _perform_check(service, target, domain)
 
     if result is None:
-        return
+        return None
 
     # xor
     return inverse != result
@@ -105,6 +106,8 @@ def perform_uncached(domain, service, target):
         return bigcartel_is_valid(domain, target)
     elif service == 'cargo':
         return cargo_is_valid(domain, target)
+    elif service == 'GoDaddy':
+        return godaddy_is_valid(domain, target)
     elif service == 'elasticbeanstalk':
         return elb_is_valid(domain, target)
     elif service == 'fastly':
