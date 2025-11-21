@@ -28,11 +28,18 @@ def confirm_s3(name):
 def _confirm_http_response(name):
     try:
         r = requests.head("http://" + name, timeout=30)
-        if 'x-amz-error-detail-BucketName' in r.headers:
+        if 'x-amz-error-detail-BucketName' in r.headers and r.headers['x-amz-error-detail-BucketName'].upper() == name:
             return True
 
+        # OBS is S3 compatible but not vulnerable
+        if 'Server' in r.headers and r.headers['Server'].upper() == 'OBS':
+            return False
+
         r = requests.get("http://" + name, timeout=30)
-        return '<BucketName>' in r.text or 'BucketName: ' in r.text or '"BucketName"' in r.text
+        if '<BucketName>' not in r.text and 'BucketName: ' not in r.text and '"BucketName"' not in r.text:
+            return False
+
+        return name in r.text
     except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
         return False
 
