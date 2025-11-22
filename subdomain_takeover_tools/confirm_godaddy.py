@@ -1,10 +1,16 @@
 import requests
 
+from subdomain_takeover_tools.extract_domain_names import extract_domain_name
 from subdomain_takeover_tools.helper.main import bootstrap
 
 
-def is_valid(name, _):
-    return confirm_godaddy(name)
+def is_valid(name, target):
+    if target == "" or target is None:
+        domain = extract_domain_name(name)
+    else:
+        domain = extract_domain_name(target)
+
+    return confirm_godaddy(domain)
 
 
 def confirm_godaddy(name):
