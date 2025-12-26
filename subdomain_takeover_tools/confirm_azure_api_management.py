@@ -1,5 +1,4 @@
 import requests
-from azure.identity import DefaultAzureCredential
 
 from subdomain_takeover_tools.helper.main import bootstrap, settings
 from subdomain_takeover_tools.helper.prepare import resolve_cname
