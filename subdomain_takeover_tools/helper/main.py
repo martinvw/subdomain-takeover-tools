@@ -33,8 +33,7 @@ def check(is_valid, domain, cname, inverse, strict):
     result = is_valid(domain, cname)
 
     if result and strict:
-        r = tldextract.extract(domain)
-        host = '.'.join(r[-2:])
+        host = tldextract.extract(domain).registered_domain
 
         host_result = True
 

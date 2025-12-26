@@ -78,8 +78,7 @@ def confirm_unclaimed_transip(domain_name):
 
 
 def _extract_single_domain_name(subdomain):
-    r = tldextract.extract(subdomain)
-    return '.'.join(r[-2:])
+    return tldextract.extract(subdomain).registered_domain
 
 
 def main():
