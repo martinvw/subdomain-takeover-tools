@@ -5,13 +5,13 @@ from subdomain_takeover_tools.authoritative_resolve import query_authoritative, 
 
 def main():
     for line in sys.stdin:
-        (subdomain, target) = line.strip().split(",")
-        validate(subdomain, target)
+        (subdomain, target, record_type) = line.strip().split(",")
+        validate(subdomain, target, record_type)
 
 
-def validate(subdomain, target):
+def validate(subdomain, target, record_type):
     try:
-        result = query_authoritative(subdomain, request_type='CNAME')
+        result = query_authoritative(subdomain, request_type=record_type)
         if len(result) != 1:
             print("No result for %s" % subdomain)
         elif result[0] != target:
