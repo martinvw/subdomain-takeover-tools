@@ -34,6 +34,9 @@ def _confirm_http_response(name):
         # OBS is S3 compatible but not vulnerable
         if 'Server' in r.headers and r.headers['Server'].upper() == 'OBS':
             return False
+        # If Tengine is the server, this is more likely to at allibaba so just assume safe
+        if 'Server' in r.headers and r.headers['Server'].upper() == 'Tengine':
+            return False
 
         r = requests.get("http://" + name, timeout=30)
         if '<BucketName>' not in r.text and 'BucketName: ' not in r.text and '"BucketName"' not in r.text:
