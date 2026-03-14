@@ -20,7 +20,7 @@ def is_valid(domain, _):
 def confirm_fastly(domain):
     setup_response = session.post(url, data={'name': domain})
     session.delete(url + '/' + prepare_domain_name(domain))
-    return "is owned by another customer" not in setup_response.text
+    return "is owned by another customer" not in setup_response.text and "is already taken by another customer" not in setup_response.text
 
 
 def main():
