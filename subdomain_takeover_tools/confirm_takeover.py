@@ -2,16 +2,16 @@ import re
 import sys
 
 from subdomain_takeover_tools.confirm_agile_crm import is_valid as agile_crm_is_valid
+from subdomain_takeover_tools.confirm_azure_api_management import is_valid as azure_api_managment_is_valid
 from subdomain_takeover_tools.confirm_azure_app_service import is_valid as azure_app_service_is_valid
 from subdomain_takeover_tools.confirm_azure_edge_cdn import is_valid as azure_edge_cdn_is_valid
 from subdomain_takeover_tools.confirm_azure_traffic_manager import is_valid as azure_traffic_manager_is_valid
-from subdomain_takeover_tools.confirm_azure_api_management import is_valid as azure_api_managment_is_valid
 from subdomain_takeover_tools.confirm_bigcartel import is_valid as bigcartel_is_valid
 from subdomain_takeover_tools.confirm_cargo import is_valid as cargo_is_valid
-from subdomain_takeover_tools.confirm_godaddy import is_valid as godaddy_is_valid
 from subdomain_takeover_tools.confirm_elb import is_valid as elb_is_valid
 from subdomain_takeover_tools.confirm_fastly import is_valid as fastly_is_valid
 from subdomain_takeover_tools.confirm_github import is_valid as github_is_valid
+from subdomain_takeover_tools.confirm_godaddy import is_valid as godaddy_is_valid
 from subdomain_takeover_tools.confirm_pantheon import is_valid as pantheon_is_valid
 from subdomain_takeover_tools.confirm_s3 import is_valid as s3_is_valid
 from subdomain_takeover_tools.confirm_shopify import is_valid as shopify_is_valid

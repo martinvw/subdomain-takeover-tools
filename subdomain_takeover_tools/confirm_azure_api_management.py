@@ -1,8 +1,8 @@
 import requests
 
+from subdomain_takeover_tools.helper.load_token import load_token
 from subdomain_takeover_tools.helper.main import bootstrap, settings
 from subdomain_takeover_tools.helper.prepare import resolve_cname
-from subdomain_takeover_tools.helper.load_token import load_token
 
 EDGE_CDN = '.azure-api.net'
 
