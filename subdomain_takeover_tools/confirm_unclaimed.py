@@ -1,5 +1,7 @@
+import functools
 import sys
 import time
+from typing import Optional
 
 import dns
 import requests
@@ -7,11 +9,6 @@ from tldextract import tldextract
 
 from subdomain_takeover_tools.helper.main import bootstrap, settings
 from subdomain_takeover_tools.helper.prepare import prepare_domain_name, get_cached, store_cache
-
-# once we include additional support we might need to lazy initialize
-transip_session = requests.Session()
-transip_session.headers['Content-Type'] = 'application/json'
-transip_session.headers['Authorization'] = 'Bearer ' + settings['transip']['access_token']
 
 tld_blacklist = [
     '.cn',
@@ -24,7 +21,7 @@ tld_blacklist = [
 ]
 
 
-def is_valid(domain, cname):
+def is_valid(domain: str, cname: Optional[str]) -> Optional[bool]:
     if cname is None:
         return False
 
@@ -34,7 +31,7 @@ def is_valid(domain, cname):
     return confirm_unclaimed(cname)
 
 
-def cname_still_valid(domain, cname):
+def cname_still_valid(domain: str, cname: str) -> bool:
     try:
         answers = dns.resolver.resolve(domain, "CNAME")
         for rdata in answers:
@@ -46,7 +43,7 @@ def cname_still_valid(domain, cname):
     return False
 
 
-def confirm_unclaimed(cname):
+def confirm_unclaimed(cname: str) -> Optional[bool]:
     domain_name = _extract_single_domain_name(prepare_domain_name(cname))
 
     cached = get_cached('unclaimed', domain_name)
@@ -56,7 +53,7 @@ def confirm_unclaimed(cname):
     return store_cache('unclaimed', domain_name, confirm_uncached(domain_name))
 
 
-def confirm_uncached(domain_name):
+def confirm_uncached(domain_name: str) -> Optional[bool]:
     for blacklisted in tld_blacklist:
         if domain_name.endswith(blacklisted):
             return False
@@ -67,9 +64,17 @@ def confirm_uncached(domain_name):
         return None
 
 
-def confirm_unclaimed_transip(domain_name):
+@functools.lru_cache(maxsize=None)
+def _get_transip_session() -> requests.Session:
+    session = requests.Session()
+    session.headers['Content-Type'] = 'application/json'
+    session.headers['Authorization'] = f"Bearer {settings['transip']['access_token']}"
+    return session
+
+
+def confirm_unclaimed_transip(domain_name: str) -> bool:
     time.sleep(5)
-    r = transip_session.get("https://api.transip.nl/v6/domain-availability/" + domain_name)
+    r = _get_transip_session().get(f"https://api.transip.nl/v6/domain-availability/{domain_name}")
     data = r.json()
     if 'availability' not in data:
         raise Exception("Request failed: " + r.content.decode())
@@ -77,7 +82,7 @@ def confirm_unclaimed_transip(domain_name):
     return data['availability']['status'] == 'free'
 
 
-def _extract_single_domain_name(subdomain):
+def _extract_single_domain_name(subdomain: str) -> str:
     return tldextract.extract(subdomain).registered_domain
 
 

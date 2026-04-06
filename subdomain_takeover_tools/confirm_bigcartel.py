@@ -1,7 +1,9 @@
+from typing import Optional
+
 from subdomain_takeover_tools.helper.main import bootstrap
 
 
-def is_valid(_, cname):
+def is_valid(_: str, cname: Optional[str]) -> Optional[bool]:
     if cname is None:
         return False
 

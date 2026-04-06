@@ -1,15 +1,16 @@
 import boto3
 import requests
 from botocore.exceptions import ClientError
+from typing import Optional
 
 from subdomain_takeover_tools.helper.main import bootstrap
 
 
-def is_valid(name, _):
+def is_valid(name: str, _: Optional[str]) -> Optional[bool]:
     return confirm_s3(name)
 
 
-def confirm_s3(name):
+def confirm_s3(name: str) -> bool:
     if name.endswith('.amazonaws.com'):
         return False
 
@@ -23,6 +24,7 @@ def confirm_s3(name):
             return _confirm_http_response(name)
         elif '403' == response_code:
             return False
+    return False
 
 
 def _confirm_http_response(name):

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from azure.identity import DefaultAzureCredential
 from azure.mgmt.trafficmanager import TrafficManagerManagementClient
 from azure.mgmt.trafficmanager.models import CheckTrafficManagerRelativeDnsNameAvailabilityParameters
@@ -10,7 +12,7 @@ TRAFFICMANAGER_NET = '.trafficmanager.net'
 tm_client = None
 
 
-def is_valid(hostname, cname):
+def is_valid(hostname: str, cname: Optional[str]) -> Optional[bool]:
     if hostname == cname:
         cname = resolve_cname(hostname)
 

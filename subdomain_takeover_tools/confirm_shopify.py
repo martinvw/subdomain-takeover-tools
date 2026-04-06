@@ -1,9 +1,10 @@
+import warnings
+from typing import Optional
+
 import requests
 import urllib3
 
 from subdomain_takeover_tools.helper.main import bootstrap
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 ONLY_ONE_STEP_LEFT = 'Only one step left!'
 
@@ -12,16 +13,18 @@ headers = {
 }
 
 
-def is_valid(hostname, _):
+def is_valid(hostname: str, _: Optional[str]) -> Optional[bool]:
     return confirm_shopify(hostname)
 
 
-def confirm_shopify(hostname):
+def confirm_shopify(hostname: str) -> bool:
     if hostname.endswith('.myshopify.com') or hostname.endswith('.shopify.com'):
         return False
 
     try:
-        r = requests.get('http://%s' % hostname, verify=False, timeout=15, headers=headers)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", urllib3.exceptions.InsecureRequestWarning)
+            r = requests.get(f'http://{hostname}', verify=False, timeout=15, headers=headers)
         return ONLY_ONE_STEP_LEFT in r.text
     except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
         return False

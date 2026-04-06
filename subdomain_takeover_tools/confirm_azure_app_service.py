@@ -1,10 +1,11 @@
 import dns.resolver
+from typing import Optional
 
 from subdomain_takeover_tools.helper.main import bootstrap
 from subdomain_takeover_tools.helper.prepare import resolve_cname, prepare_domain_name
 
 
-def is_valid(hostname, cname):
+def is_valid(hostname: str, cname: Optional[str]) -> Optional[bool]:
     if hostname == cname:
         cname = resolve_cname(hostname)
 

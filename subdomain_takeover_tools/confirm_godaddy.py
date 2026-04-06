@@ -1,10 +1,11 @@
 import requests
+from typing import Optional
 
 from subdomain_takeover_tools.extract_domain_names import extract_domain_name
 from subdomain_takeover_tools.helper.main import bootstrap
 
 
-def is_valid(name, target):
+def is_valid(name: str, target: Optional[str]) -> Optional[bool]:
     if target == "" or target is None:
         domain = extract_domain_name(name)
     else:
