@@ -3,6 +3,10 @@ import sys
 
 import tldextract
 
+extract = tldextract.TLDExtract(
+    extra_suffixes=["uk.com", "co.nl"]
+)
+
 
 def main():
     for line in sys.stdin:
@@ -32,7 +36,7 @@ def _handle_pattern(subdomain):
 
 def _extract_single_domain_name(subdomain):
     subdomain = subdomain.replace('(', '').replace(')', '')
-    r = tldextract.extract(subdomain)
+    r = extract(subdomain)
     return r.registered_domain
 
 
