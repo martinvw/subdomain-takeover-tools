@@ -6,6 +6,7 @@ from subdomain_takeover_tools.confirm_agile_crm import is_valid as agile_crm_is_
 from subdomain_takeover_tools.confirm_azure_api_management import is_valid as azure_api_management_is_valid
 from subdomain_takeover_tools.confirm_azure_app_service import is_valid as azure_app_service_is_valid
 from subdomain_takeover_tools.confirm_azure_edge_cdn import is_valid as azure_edge_cdn_is_valid
+from subdomain_takeover_tools.confirm_azure_front_door import is_valid as azure_front_door_is_valid
 from subdomain_takeover_tools.confirm_azure_traffic_manager import is_valid as azure_traffic_manager_is_valid
 from subdomain_takeover_tools.confirm_bigcartel import is_valid as bigcartel_is_valid
 from subdomain_takeover_tools.confirm_cargo import is_valid as cargo_is_valid
@@ -25,19 +26,29 @@ cacheable = ["azure", "elasticbeanstalk"]
 
 
 def _azure_is_valid(domain: str, target: str) -> Optional[bool]:
-    if target.endswith('azurewebsites.net'):
+    if target.endswith('.azurewebsites.net'):
         return azure_app_service_is_valid(domain, target)
-    elif target.endswith('azureedge.net'):
+    elif target.endswith('.azureedge.net'):
         return azure_edge_cdn_is_valid(domain, target)
-    elif target.endswith('trafficmanager.net'):
+    elif target.endswith('.trafficmanager.net'):
         return azure_traffic_manager_is_valid(domain, target)
-    elif target.endswith('azure-api.net'):
+    elif target.endswith('.azure-api.net'):
         return azure_api_management_is_valid(domain, target)
-    elif target.endswith('cloudapp.azure.com'):
+    elif target.endswith('.azurefd.net'):
+        return azure_front_door_is_valid(domain, target)
+    elif target.endswith('.cloudapp.azure.com'):
         # for now, we assume cloudapp is vulnerable
         return True
     # other Azure services are not yet supported
-    return None
+    elif target.endswith('.blob.core.windows.net') or target.endswith('.azurehdinsight.net') or target.endswith(
+            '.azurecontainer.io') or target.endswith('.database.windows.net') or target.endswith(
+        '.azurecr.io') or target.endswith('.servicebus.windows.net') or target.endswith(
+        '.visualstudio.com') or target.endswith('.search.windows.net') or target.endswith(
+        '.azuredatalakestore.net') or target.endswith('.azuredatalakestore.net'):
+        return None
+    else:
+        # this is really unsupported and most likely a false positive
+        return False
 
 
 VALIDATORS: dict[str, Callable[[str, str], Optional[bool]]] = {
