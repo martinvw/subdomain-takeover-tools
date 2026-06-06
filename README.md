@@ -25,6 +25,18 @@ All scripts support the following two parameters:
 - `--strict`:  only report as vulnerable if the issue is not also applicable on `hostname.tld` and `www.hostname.tld`.
 - `--inverse`: do inverse reporting, so report all subdomains that are not vulnerable
 
+### Supported input formats
+
+In addition to plain hostnames, the scripts accept the output of two scanners and auto-detect which one is used per line:
+
+- [subtake](https://github.com/jakejarvis/subtake): `[service: target]<tab><tab>domain`
+- [nuclei](https://github.com/projectdiscovery/nuclei) takeover templates: `[template-id] [protocol] [severity] url ["extracted-cname"]`
+
+For the unified `confirm_takeover` dispatcher, nuclei template ids such as `github-takeover` and `aws-bucket-takeover` are mapped to the matching service validator automatically. Findings for services without a validator are considered *unsupported* and dropped by default. The dispatcher accepts two extra parameters:
+
+- `--full`: output the full input line instead of just the domain.
+- `--include-unsupported`: also emit unsupported findings (services with no validator), so a single pass over nuclei output keeps both confirmed-vulnerable and not-yet-disproven findings.
+
 Some scripts require a config file to be present, the location is `.subdomain_takeover_tools.ini`, an example of the file can be found below:
 
 ```ini
@@ -89,6 +101,31 @@ Please note that for Cargo Collective this repo currently only provides an initi
 ```bash
 grep "\[cargo: " subtake-output.txt | confirm_cargo
 ```
+
+### HTTP-fingerprint validators
+
+The following services are validated by fetching the candidate host over HTTP(S) and looking
+for the provider's "domain not connected / unclaimed" error page. They need no config or
+credentials, and they short-circuit (return not-vulnerable) for the provider's own hostnames,
+which filters the bulk of self-referential false positives:
+
+| Command | Service | Fingerprint |
+| --- | --- | --- |
+| `confirm_framer` | Framer | `Site Not Found \| Framer` |
+| `confirm_leadpages` | Leadpages | "This page couldn't be found…" |
+| `confirm_meteor` | Meteor / Galaxy | "No applications registered for host" |
+| `confirm_surveysparrow` | SurveySparrow | "Account not found." |
+| `confirm_greatpages` | GreatPages | "Página não encontrada (Erro 404)" |
+| `confirm_wix` | Wix | "Error ConnectYourDomain occurred" |
+| `confirm_mashery` | Mashery | "Unrecognized domain" |
+
+```bash
+grep "\[framer: " subtake-output.txt | confirm_framer
+```
+
+These are also wired into the unified `confirm_takeover` dispatcher via their nuclei template
+ids (`framer-takeover`, `leadpages-takeover`, `meteor-takeover`, `surveysparrow-takeover`,
+`greatpages-takeover`, `wix-takeover`, `mashery-takeover`).
 
 ## Separate tools
 

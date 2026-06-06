@@ -5,7 +5,12 @@ import sys
 import requests
 import tldextract
 
-from subdomain_takeover_tools.helper.prepare import prepare_domain_name, process_subtake_output
+from subdomain_takeover_tools.helper.prepare import (
+    prepare_domain_name,
+    process_subtake_output,
+    is_nuclei_line,
+    process_nuclei_output,
+)
 
 settings = configparser.ConfigParser()
 settings.read(os.path.expanduser('~/.subdomain_takeover_tools.ini'))
@@ -24,6 +29,8 @@ def bootstrap(is_valid):
 
         if ']\t\t' in line:
             process_subtake_output(is_valid, line, check, inverse, strict)
+        elif is_nuclei_line(line):
+            process_nuclei_output(is_valid, line, check, inverse, strict)
         else:
             host = prepare_domain_name(line)
             check(is_valid, host, host, inverse, strict)

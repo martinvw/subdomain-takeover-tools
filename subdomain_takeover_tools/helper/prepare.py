@@ -4,6 +4,13 @@ import dns.resolver
 
 cache = {}
 
+# nuclei output looks like:
+#   [github-takeover] [http] [high] https://example.com ["example.github.io"]
+# where the trailing extracted-results array is optional.
+NUCLEI_LINE_RE = re.compile(
+    r'^\[(?P<service>[^\]]+)\]\s+\[[^\]]+\]\s+\[[^\]]+\]\s+(?P<url>\S+)(?:\s+\[(?P<extracted>.*)\])?\s*$'
+)
+
 
 def prepare_domain_name(host_in):
     host = re.sub(r'https?://', '', host_in)
@@ -36,6 +43,30 @@ def process_subtake_output(is_valid, line, check, inverse, strict):
         target = ''
     else:
         (_, target) = parts[1:-2].split(': ')
+    check(is_valid, domain, target, inverse, strict)
+
+
+def is_nuclei_line(line):
+    return NUCLEI_LINE_RE.match(line) is not None
+
+
+def parse_nuclei_line(line):
+    match = NUCLEI_LINE_RE.match(line)
+    service = match.group('service')
+    domain = prepare_domain_name(match.group('url'))
+
+    extracted = match.group('extracted')
+    if extracted:
+        values = re.findall(r'"([^"]*)"', extracted)
+        target = values[0] if values else extracted.strip()
+    else:
+        target = ''
+
+    return service, target, domain
+
+
+def process_nuclei_output(is_valid, line, check, inverse, strict):
+    (_, target, domain) = parse_nuclei_line(line)
     check(is_valid, domain, target, inverse, strict)
 
 

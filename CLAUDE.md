@@ -33,13 +33,13 @@ Every `confirm_*.py` module follows the same contract:
 - `is_valid(domain, cname) -> bool | None` — returns `True` if vulnerable, `False` if not, `None` if unsupported
 - `main()` — calls `bootstrap(is_valid)` from `helper/main.py`
 
-`helper/main.py:bootstrap()` reads stdin, detects whether input is raw hostnames or subtake-format output (`[service: target]\t\tdomain`), and calls the module's `is_valid` function. It also handles `--strict` (re-check on apex + www) and `--inverse` (flip output) flags.
+`helper/main.py:bootstrap()` reads stdin, detects per line whether input is raw hostnames, subtake-format output (`[service: target]\t\tdomain`), or nuclei-format output (`[template-id] [protocol] [severity] url ["extracted-cname"]`), and calls the module's `is_valid` function. It also handles `--strict` (re-check on apex + www) and `--inverse` (flip output) flags.
 
-`helper/prepare.py` provides shared DNS utilities and the subtake output parser.
+`helper/prepare.py` provides shared DNS utilities and the parsers for both subtake (`process_subtake_output`) and nuclei (`is_nuclei_line`, `parse_nuclei_line`, `process_nuclei_output`) output.
 
 ### `confirm_takeover.py` — unified dispatcher
 
-Routes subtake output to the correct `is_valid` function based on the service name in the line. Supports `--full` flag to output the full input line instead of just the domain. Azure routing happens here: a single `azure` service tag is dispatched to `azure_app_service`, `azure_edge_cdn`, `azure_traffic_manager`, or `azure_api_management` based on the CNAME target suffix.
+Routes subtake or nuclei output to the correct `is_valid` function based on the service name in the line. Nuclei template ids (e.g. `github-takeover`) are normalized to internal service names via `NUCLEI_SERVICE_MAP` / `_normalize_nuclei_service()`. Supports `--full` flag to output the full input line instead of just the domain, and `--include-unsupported` to also emit findings whose service has no validator (the `None` result, otherwise dropped). Azure routing happens here: a single `azure` service tag is dispatched to `azure_app_service`, `azure_edge_cdn`, `azure_traffic_manager`, or `azure_api_management` based on the CNAME target suffix.
 
 ### Config-dependent modules
 
@@ -51,4 +51,5 @@ Azure modules use `helper/load_token.py` which relies on `DefaultAzureCredential
 
 1. Create `confirm_<service>.py` with `is_valid(domain, cname)` and `main()` calling `bootstrap(is_valid)`.
 2. Register the entry point in `setup.py` under `console_scripts`.
-3. Add dispatch logic in `confirm_takeover.py:perform_uncached()`.
+3. Add dispatch logic in `confirm_takeover.py:perform_uncached()` (via the `VALIDATORS` dict).
+4. If the service has a matching nuclei takeover template, add its id to `NUCLEI_SERVICE_MAP` in `confirm_takeover.py`.
