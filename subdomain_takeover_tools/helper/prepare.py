@@ -1,5 +1,6 @@
 import re
 
+import dns.exception
 import dns.resolver
 
 cache = {}
@@ -80,3 +81,14 @@ def resolve_cname(hostname):
             return prepare_domain_name(str(cnames[0]))
     except dns.resolver.NXDOMAIN:
         return None
+
+
+def resolve_ips(hostname):
+    """Resolve hostname to its final set of IPv4 addresses, following any CNAME
+    chain. Returns an empty set when the host does not resolve."""
+    try:
+        answers = dns.resolver.resolve(hostname, 'A')
+        return {str(rdata) for rdata in answers}
+    except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer,
+            dns.resolver.NoNameservers, dns.exception.Timeout):
+        return set()

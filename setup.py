@@ -85,6 +85,8 @@ setup(
                                       'confirm_framer=subdomain_takeover_tools.confirm_framer:main',
                                       'confirm_leadpages=subdomain_takeover_tools.confirm_leadpages:main',
                                       'confirm_meteor=subdomain_takeover_tools.confirm_meteor:main',
+                                      'confirm_multiscreensite=subdomain_takeover_tools.confirm_multiscreensite'
+                                      ':main',
                                       'confirm_surveysparrow=subdomain_takeover_tools.confirm_surveysparrow:main',
                                       'confirm_greatpages=subdomain_takeover_tools.confirm_greatpages:main',
                                       'confirm_wix=subdomain_takeover_tools.confirm_wix:main',

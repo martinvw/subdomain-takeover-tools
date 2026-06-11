@@ -19,6 +19,7 @@ from subdomain_takeover_tools.confirm_greatpages import is_valid as greatpages_i
 from subdomain_takeover_tools.confirm_leadpages import is_valid as leadpages_is_valid
 from subdomain_takeover_tools.confirm_mashery import is_valid as mashery_is_valid
 from subdomain_takeover_tools.confirm_meteor import is_valid as meteor_is_valid
+from subdomain_takeover_tools.confirm_multiscreensite import is_valid as multiscreensite_is_valid
 from subdomain_takeover_tools.confirm_pantheon import is_valid as pantheon_is_valid
 from subdomain_takeover_tools.confirm_s3 import is_valid as s3_is_valid
 from subdomain_takeover_tools.confirm_shopify import is_valid as shopify_is_valid
@@ -97,6 +98,7 @@ VALIDATORS: dict[str, Callable[[str, str], Optional[bool]]] = {
     'leadpages': leadpages_is_valid,
     'mashery': mashery_is_valid,
     'meteor': meteor_is_valid,
+    'multiscreensite': multiscreensite_is_valid,
     'pantheon': pantheon_is_valid,
     's3 bucket': s3_is_valid,
     'shopify': shopify_is_valid,
