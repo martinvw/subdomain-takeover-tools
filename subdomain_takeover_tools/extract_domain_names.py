@@ -4,7 +4,7 @@ import sys
 import tldextract
 
 extract = tldextract.TLDExtract(
-    extra_suffixes=["uk.com", "co.nl"]
+    extra_suffixes=["uk.com", "co.nl", "com.ru"]
 )
 
 
