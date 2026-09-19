@@ -5,7 +5,11 @@ from subdomain_takeover_tools.authoritative_resolve import query_authoritative, 
 
 def main():
     for line in sys.stdin:
-        (subdomain, target, record_type) = line.strip().split(",")
+        line = line.strip()
+        # Skip blank lines and '#' comments so input files can be annotated
+        if not line or line.startswith("#"):
+            continue
+        (subdomain, target, record_type) = line.split(",")
         validate(subdomain, target, record_type)
 
 

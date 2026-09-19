@@ -151,6 +151,27 @@ To do this we fetch the authoritative result's step by step from the authoritati
 authoritative_resolve "github.com" "martinvw.nl"
 ```
 
+### Monitoring CNAMEs
+
+The `monitor_cnames` tool re-checks known records against the authoritative
+nameserver and reports any drift. It reads one record per line from stdin in the
+format `subdomain,target,record_type`:
+
+```bash
+monitor_cnames < records.csv
+```
+
+It prints a message when a record was changed, removed, or returns no result; a
+record that still points to the expected target produces no output.
+
+Lines starting with `#` are treated as comments and blank lines are ignored, so
+the input file can be annotated:
+
+```
+# production records
+app.example.com,github.io,CNAME
+```
+
 ### Exporting and enriching
 
 The `subtake_enrich_and_export` will split the existing output and add some additional columms:
