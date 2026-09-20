@@ -164,6 +164,22 @@ monitor_cnames < records.csv
 It prints a message when a record was changed, removed, or returns no result; a
 record that still points to the expected target produces no output.
 
+Any record type is supported, including records with multiple values such as
+`MX`. For `MX` the `target` is the mail exchange host only, without the priority
+number:
+
+```
+example.org,gone.example.org,MX
+```
+
+The `target` field may list several expected values separated by `;`. The check
+is a presence check: it reports drift when a listed target is no longer among
+the resolved records and ignores any additional records:
+
+```
+www.example.com,a.example.net;b.example.net,A
+```
+
 Lines starting with `#` are treated as comments and blank lines are ignored, so
 the input file can be annotated:
 
