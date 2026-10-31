@@ -3,7 +3,7 @@ from typing import Optional
 
 import requests
 
-from subdomain_takeover_tools.helper.load_token import load_token
+from subdomain_takeover_tools.helper.load_token import load_token, request_retry
 from subdomain_takeover_tools.helper.main import bootstrap
 from subdomain_takeover_tools.helper.prepare import resolve_cname
 
@@ -28,22 +28,28 @@ def is_valid(hostname: str, cname: Optional[str]) -> Optional[bool]:
     return confirm_azure_edge_cdn(cname)
 
 
+@request_retry
+def _check_name_availability(session, token, dns_prefix):
+    return session.post(
+        _CDN_URL,
+        json={
+            'name': dns_prefix,
+            'type': 'Microsoft.Cdn/Profiles/Endpoints'
+        },
+        headers={
+            "Authorization": f"Bearer {token}"
+        },
+        timeout=(5, 30),
+    )
+
+
 def confirm_azure_edge_cdn(cname: str) -> bool:
     session, token = _get_session_and_token()
 
     try:
         if cname.count('.') == 2 and EDGE_CDN in cname:
             dns_prefix = cname.replace(EDGE_CDN, '')
-            result = session.post(
-                _CDN_URL,
-                json={
-                    'name': dns_prefix,
-                    'type': 'Microsoft.Cdn/Profiles/Endpoints'
-                },
-                headers={
-                    "Authorization": f"Bearer {token}"
-                }
-            )
+            result = _check_name_availability(session, token, dns_prefix)
             return result.json()['nameAvailable']
     except KeyError:
         pass

@@ -42,6 +42,12 @@ Some scripts require a config file to be present, the location is `.subdomain_ta
 ```ini
 [azure]
 subscription_id=44713cf2-8656-11ec-a8a3-0242ac120002
+; Optional: authenticate with a service principal instead of the Azure CLI.
+; When these three keys are present they take precedence; otherwise the tools
+; fall back to the Azure CLI login / DefaultAzureCredential chain.
+tenant_id=44713cf2-8656-11ec-a8a3-0242ac120002
+client_id=44713cf2-8656-11ec-a8a3-0242ac120002
+client_secret=your-service-principal-secret
 [github]
 username=martinvw
 access_token=44713cf2-8656-11ec-a8a3-0242ac120002
@@ -51,6 +57,42 @@ api_token=44713cf2-8656-11ec-a8a3-0242ac120002
 service=44713cf2-8656-11ec-a8a3-0242ac120002
 version=3
 ```
+
+### Azure authentication
+
+The Azure checkers (`confirm_azure_*`) obtain a `management.azure.com` token in one
+of two ways:
+
+- **Service principal (preferred):** set `tenant_id`, `client_id` and `client_secret`
+  under `[azure]`. This avoids the slow Azure CLI credential chain, which can stall on
+  the IMDS probe under load and fails in headless environments with
+  *"Failed to invoke the Azure CLI"*.
+- **Azure CLI fallback:** if those keys are absent, the tools fall back to
+  `DefaultAzureCredential` (e.g. an `az login` session), exactly as before.
+
+You can create a suitable service principal with the Azure CLI, scoped to only the
+resource group(s) that hold your takeover-claiming resources:
+
+```bash
+az ad sp create-for-rbac --name subdomain-takeover-claimer \
+    --role Contributor \
+    --scopes /subscriptions/<subscription-id>/resourceGroups/subdomains_group \
+             /subscriptions/<subscription-id>/resourceGroups/subdomains_free_group
+```
+
+The command prints a JSON object; map its fields to `[azure]` as follows:
+
+| `create-for-rbac` output | ini key         |
+|--------------------------|-----------------|
+| `tenant`                 | `tenant_id`     |
+| `appId`                  | `client_id`     |
+| `password`               | `client_secret` |
+
+The `client_secret` is shown only once, so copy it immediately.
+
+Successful tokens are cached at `~/.cache/subdomain-takeovers/azure_mgmt_token.json`
+(mode `0600`) and reused until shortly before they expire, so repeated short-lived CLI
+runs don't re-authenticate every time.
 
 ## Confirming S3
 

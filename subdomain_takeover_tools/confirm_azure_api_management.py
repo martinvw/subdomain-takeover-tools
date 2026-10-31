@@ -3,7 +3,7 @@ from typing import Optional
 
 import requests
 
-from subdomain_takeover_tools.helper.load_token import load_token
+from subdomain_takeover_tools.helper.load_token import load_token, request_retry
 from subdomain_takeover_tools.helper.main import bootstrap, settings
 from subdomain_takeover_tools.helper.prepare import resolve_cname
 
@@ -27,24 +27,30 @@ def is_valid(hostname: str, cname: Optional[str]) -> Optional[bool]:
     return confirm_azure_api_management(cname)
 
 
+@request_retry
+def _check_name_availability(session, token, dns_prefix):
+    return session.post(
+        "https://management.azure.com/api/invoke",
+        json={'name': dns_prefix, 'type': 'Microsoft.ApiManagement/service'},
+        headers={
+            "Authorization": f"Bearer {token}",
+            "X-Ms-Path-Query": (
+                f"/subscriptions/{settings['azure']['subscription_id']}"
+                "/providers/Microsoft.ApiManagement/checkNameAvailability"
+                "?api-version=2022-09-01-preview"
+            )
+        },
+        timeout=(5, 30),
+    )
+
+
 def confirm_azure_api_management(cname: str) -> bool:
     session, token = _get_session_and_token()
 
     try:
         if cname.count('.') == 2 and API_MANAGEMENT_NET in cname:
             dns_prefix = cname.replace(API_MANAGEMENT_NET, '')
-            result = session.post(
-                "https://management.azure.com/api/invoke",
-                json={'name': dns_prefix, 'type': 'Microsoft.ApiManagement/service'},
-                headers={
-                    "Authorization": f"Bearer {token}",
-                    "X-Ms-Path-Query": (
-                        f"/subscriptions/{settings['azure']['subscription_id']}"
-                        "/providers/Microsoft.ApiManagement/checkNameAvailability"
-                        "?api-version=2022-09-01-preview"
-                    )
-                }
-            )
+            result = _check_name_availability(session, token, dns_prefix)
             return result.json()['nameAvailable']
     except KeyError:
         pass

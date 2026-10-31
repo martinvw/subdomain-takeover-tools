@@ -1,9 +1,9 @@
 from typing import Optional
 
-from azure.identity import DefaultAzureCredential
 from azure.mgmt.trafficmanager import TrafficManagerManagementClient
 from azure.mgmt.trafficmanager.models import CheckTrafficManagerRelativeDnsNameAvailabilityParameters
 
+from subdomain_takeover_tools.helper.load_token import build_credential
 from subdomain_takeover_tools.helper.main import bootstrap, settings
 from subdomain_takeover_tools.helper.prepare import resolve_cname
 
@@ -26,7 +26,7 @@ def confirm_azure_traffic_manager(cname):
     global tm_client
     if TRAFFICMANAGER_NET in cname:
         if tm_client is None:
-            tm_client = TrafficManagerManagementClient(DefaultAzureCredential(), settings['azure']['subscription_id'])
+            tm_client = TrafficManagerManagementClient(build_credential(), settings['azure']['subscription_id'])
 
         dns_prefix = cname.replace(TRAFFICMANAGER_NET, '')
         result = tm_client.profiles.check_traffic_manager_relative_dns_name_availability(

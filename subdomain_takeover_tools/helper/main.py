@@ -12,7 +12,9 @@ from subdomain_takeover_tools.helper.prepare import (
     process_nuclei_output,
 )
 
-settings = configparser.ConfigParser()
+# interpolation=None: the ini holds secrets that may contain '%', which the
+# default BasicInterpolation would misread.
+settings = configparser.ConfigParser(interpolation=None)
 settings.read(os.path.expanduser('~/.subdomain_takeover_tools.ini'))
 
 
